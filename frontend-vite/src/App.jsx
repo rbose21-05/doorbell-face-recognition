@@ -44,7 +44,6 @@ function Home() {
             }}
         >
             {/* Logo Image */}
-            <img src="/logo.jpg" alt="Logo" width="150" />
 
             <h1>🎥 Doorbell Face Recognition</h1>
 

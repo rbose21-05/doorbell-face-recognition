@@ -1,12 +1,20 @@
 from flask import Flask, jsonify, request, send_file
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from deepface import DeepFace 
 from datetime import datetime
 import cv2
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # Enable CORS globally
+
+# CORS headers for preflight and fetch
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    return response
 
 # Visitor log
 def log_visitor(name):
@@ -15,17 +23,15 @@ def log_visitor(name):
         date = now.strftime("%Y-%m-%d")
         time = now.strftime("%H:%M:%S")
         file.write(f"{name},{date},{time}\n")
-        
 
-# Delete Log
+# Delete log
 @app.route("/clear_log", methods=["POST"])
 def clear_log():
     with open("visitor_log.csv", "w") as file:
-        file.write("Name,Date,Time\n")  # optional: keep header
+        file.write("Name,Date,Time\n")  # Optional header
     return jsonify({"message": "Visitor log cleared"}), 200
 
-
-# Face capture & recognition
+# Face capture and recognition
 @app.route("/capture", methods=["GET"])
 def capture_and_recognize():
     cam = cv2.VideoCapture(0)
@@ -58,24 +64,21 @@ def capture_and_recognize():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Log access with POST (includes name/key)
-
-@app.route("/log", methods=["POST", "OPTIONS"])
-@cross_origin(origins="http://localhost:3000", methods=["POST", "OPTIONS"])
+# Secure log access
+@app.route("/log", methods=["POST"])
 def get_log():
     data = request.get_json()
     key = data.get("key", "").strip()
 
-    if  key == "211005":
+    if key == "211005":
         if os.path.exists("visitor_log.csv"):
             return send_file("visitor_log.csv", mimetype="text/csv")
         else:
             return jsonify({"error": "Log not found"}), 404
     else:
         return jsonify({"error": "Access denied"}), 403
-    
 
-# ADD FACE 
+# Add new face
 @app.route("/add_face", methods=["POST"])
 def add_face():
     data = request.get_json()
@@ -98,4 +101,3 @@ def add_face():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
