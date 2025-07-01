@@ -15,7 +15,10 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "speech": "^0.2.1",
+    "text": "^0.1.0",
+    "to": "^0.2.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

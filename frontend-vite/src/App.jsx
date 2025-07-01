@@ -3,8 +3,11 @@ import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import VisitorLog from "./VisitorLog";
 import { motion } from "framer-motion";
+/*import speech from react-text-to-speech;*/
 
 function Home() {
+    /*<speech text="Hello, this is React speaking!" />;*/
+
     const [result, setResult] = useState("");
     const [showAddPrompt, setShowAddPrompt] = useState(false);
     const [nameInput, setNameInput] = useState("");
@@ -44,6 +47,7 @@ function Home() {
             }}
         >
             {/* Logo Image */}
+            <img src="./logo" alt="logo" />
 
             <h1>🎥 Doorbell Face Recognition</h1>
 
