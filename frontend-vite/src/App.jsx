@@ -50,47 +50,82 @@ function Home() {
             style={{
                 height: "100vh",
                 width: "100vw",
-                backgroundColor: "#e6ffe6",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 padding: "0",
                 boxSizing: "border-box",
                 overflow: "hidden",
+                backgroundImage:
+                    "linear-gradient(to right, #9d4edd, #f15bb5, #00bbf9)",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
             }}
         >
             <div
                 style={{
-                    width: "100%",
+                    width: "90%",
                     maxWidth: "480px",
-                    backgroundColor: "white",
-                    padding: "20px",
-                    borderRadius: "12px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.15)",
-                    overflowY: "auto",
-                    maxHeight: "95vh",
-                    fontFamily: "Arial, sans-serif",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+
+                    padding: "24px",
+                    borderRadius: "24px",
+                    color: "white",
+                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
                     textAlign: "center",
+                    backdropFilter: "blur(10px)", // Optional: keep frosted feel
+                    WebkitBackdropFilter: "blur(10px)",
                 }}
             >
-                <h1 style={{ fontSize: "24px", marginBottom: "10px" }}>
-                    🎥 Doorbell Face Recognition
+                <h1
+                    style={{
+                        fontSize: "32px",
+                        fontWeight: "800",
+                        letterSpacing: "3px",
+                        marginBottom: "8px",
+                        color: "white",
+                        textTransform: "uppercase",
+                    }}
+                >
+                    FACE-BELL
                 </h1>
-                <p style={{ fontSize: "16px", marginBottom: "20px" }}>
-                    Capture and recognize faces at your door!
+
+                <p
+                    style={{
+                        fontSize: "14px",
+                        fontStyle: "italic",
+                        color: "white",
+                        letterSpacing: "1px",
+                        marginBottom: "24px",
+                    }}
+                >
+                    Downloading a dad joke, smile!!
                 </p>
 
-                <div style={{ marginBottom: "20px" }}>
+                <div
+                    style={{
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        width: "200px",
+                        height: "200px",
+                        backgroundColor: "#003566",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "0 auto 24px",
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
+                    }}
+                >
                     <Webcam
                         ref={webcamRef}
                         audio={false}
                         screenshotFormat="image/jpeg"
-                        width={320}
-                        height={240}
                         style={{
-                            borderRadius: "8px",
-                            border: "2px solid #4CAF50",
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
                         }}
                     />
                 </div>
