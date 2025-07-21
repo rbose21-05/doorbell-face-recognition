@@ -55,7 +55,8 @@ function Home() {
                 alignItems: "center",
                 padding: "0",
                 boxSizing: "border-box",
-                overflow: "hidden",
+                overflowX: "hidden",
+                overflowY: "scroll",
                 backgroundImage:
                     "linear-gradient(to right, #9d4edd, #f15bb5, #00bbf9)",
                 backgroundRepeat: "no-repeat",

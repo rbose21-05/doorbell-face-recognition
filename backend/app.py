@@ -8,8 +8,7 @@ import base64
 import numpy as np
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS globally
-
+CORS(app)  
 # CORS headers
 @app.after_request
 def after_request(response):
@@ -36,20 +35,23 @@ def clear_log():
 # New: Recognize face from React-captured image
 @app.route("/recognize", methods=["POST"])
 def recognize_from_image():
-    data = request.get_json()
-    image_base64 = data.get("image")
-
-    if not image_base64:
-        return jsonify({"error": "No image provided"}), 400
-
     try:
+        data = request.get_json()
+        print("Received data:", data)
+        image_base64 = data.get("image")
+
+        if not image_base64:
+            print("No image provided")
+            return jsonify({"error": "No image provided"}), 400
+
         # Decode base64 image
+        print("Decoding base64 image")
         header, encoded = image_base64.split(",", 1)
         img_data = base64.b64decode(encoded)
         np_arr = np.frombuffer(img_data, np.uint8)
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
-        # Face recognition
+        print("Calling DeepFace.find()...")
         result = DeepFace.find(
             img_path=img,
             db_path="C:/Users/rupsa/OneDrive/Pictures/Desktop/doorbell/backend/faces",
@@ -58,17 +60,26 @@ def recognize_from_image():
             enforce_detection=False
         )
 
-        if len(result[0]) > 0:
-            identity_path = result[0]['identity'][0]
+        print("DeepFace result:", result)
+
+        if isinstance(result, list) and len(result) > 0 and not result[0].empty:
+            df = result[0]
+
+            print("Result DataFrame:", df)
+            identity_path = df.iloc[0]["identity"]
             name = os.path.basename(identity_path).split('.')[0]
+            print("Recognized name:", name)
             log_visitor(name)
             return jsonify({"match": True, "name": name})
         else:
+            print("No match found.")
             log_visitor("Unknown")
             return jsonify({"match": False})
 
     except Exception as e:
+        print("Error in /recognize route:", str(e))
         return jsonify({"error": str(e)}), 500
+
 
 # Keep: Add a new face using backend webcam
 @app.route("/add_face", methods=["POST"])
@@ -94,6 +105,7 @@ def add_face():
 @app.route("/log", methods=["POST"])
 def get_log():
     data = request.get_json()
+    
     key = data.get("key", "").strip()
 
     if key == "211005":
